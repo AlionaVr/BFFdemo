@@ -23,10 +23,15 @@ services:
     container_name: bff_demo_user_service
     restart: on-failure
     ports:
-      - "8080:8080"
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/userdb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
       db:
         condition: service_healthy
 
 volumes:
-    db_data:
+  db_data:
