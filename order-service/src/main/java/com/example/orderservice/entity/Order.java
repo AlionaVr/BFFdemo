@@ -18,8 +18,8 @@ public class Order {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "total_cost", nullable = false, precision = 19, scale = 2)
-    private BigDecimal totalCost;
+    @Column(name = "total_amount", nullable = false, precision = 19, scale = 2)
+    private BigDecimal totalAmount;
 
     @Column(name = "currency", nullable = false, length = 3)
     private String currency;

@@ -1,5 +1,7 @@
 package com.example.orderservice.controller;
 
+import com.example.orderservice.dto.OrderDTO;
+import com.example.orderservice.dto.OrderItemDTO;
 import com.example.orderservice.entity.Order;
 import com.example.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +20,32 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/by-user/{userId}")
-    public List<Order> getOrdersByUserId(@PathVariable("userId") Long userId) {
-        return orderService.findOrdersByUserId(userId);
+    public List<OrderDTO> getOrdersByUserId(@PathVariable("userId") Long userId) {
+        return orderService.findOrdersByUserId(userId).stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
+    public OrderDTO convertToDTO(Order order) {
+        OrderDTO dto = new OrderDTO();
+        dto.setId(order.getId());
+        dto.setUserId(order.getUserId());
+        dto.setTotalAmount(order.getTotalAmount());
+        dto.setCurrency(order.getCurrency());
+        dto.setCreatedAt(order.getCreatedAt());
+
+        if (order.getOrderItems() != null) {
+            List<OrderItemDTO> itemDTOs = order.getOrderItems().stream()
+                    .map(item -> new OrderItemDTO(
+                            item.getId(),
+                            item.getProductName(),
+                            item.getQuantity(),
+                            item.getUnitPrice(),
+                            item.getTotalPrice()
+                    ))
+                    .toList();
+            dto.setOrderItems(itemDTOs);
+        }
+        return dto;
+    }
 }
