@@ -7,11 +7,11 @@ COPY order-service/pom.xml ./order-service/
 RUN mvn dependency:go-offline
 COPY user-service/src ./user-service/src
 COPY order-service/src ./order-service/src
-RUN mvn clean package -pl user-service -am -DskipTests
+RUN mvn clean package -pl order-service -am -DskipTests
 
 # runtime stage
 FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
-COPY --from=builder /app/user-service/target/user-service-1.0.0.jar app.jar
-EXPOSE 8081
+COPY --from=builder /app/order-service/target/order-service-1.0.0.jar app.jar
+EXPOSE 8082
 ENTRYPOINT ["java","-jar","app.jar"]

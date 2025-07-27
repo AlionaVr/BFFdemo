@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-orders-table
+      author: alionaVr
+      changes:
+        - sqlFile:
+            path: db/sql/create-orders-table.sql
+            relativeToChangelogFile: false

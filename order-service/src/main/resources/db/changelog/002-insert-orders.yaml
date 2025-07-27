@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-insert-orders
+      author: alionaVr
+      changes:
+        - sqlFile:
+            path: db/sql/insert-orders.sql
+            relativeToChangelogFile: false
