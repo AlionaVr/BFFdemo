@@ -1,5 +1,4 @@
 version: '3.9'
-
 services:
 
   user-db:
@@ -21,7 +20,8 @@ services:
   user-service:
     build:
       context: .
-      dockerfile: user-service/Dockerfile
+      dockerfile: Dockerfile
+      target: user-service
     ports:
       - "8081:8081"
     environment:
@@ -52,7 +52,8 @@ services:
   order-service:
     build:
       context: .
-      dockerfile: order-service/Dockerfile
+      dockerfile: Dockerfile
+      target: order-service
     ports:
       - "8082:8082"
     environment:
@@ -62,6 +63,20 @@ services:
     depends_on:
       order-db:
         condition: service_healthy
+
+  site-bff:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: site-bff
+    ports:
+      - "8080:8080"
+    environment:
+      BFF_USER-SERVICE_URL: http://user-service:8081/api/users
+      BFF_ORDER-SERVICE_URL: http://order-service:8082/api/orders
+    depends_on:
+      - user-service
+      - order-service
 
 volumes:
   user_db_data:
